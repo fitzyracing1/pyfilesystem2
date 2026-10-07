@@ -1,7 +1,11 @@
 """Python filesystem abstraction layer.
 """
 
-__import__("pkg_resources").declare_namespace(__name__)  # type: ignore
+# pkgutil-style namespace package: also look for ``fs`` modules in other
+# sys.path entries (extensions such as fs.sshfs add ``fs.*`` modules).
+# This used to be ``pkg_resources.declare_namespace``, which no longer exists
+# with setuptools 82+.
+__path__ = __import__("pkgutil").extend_path(__path__, __name__)  # type: ignore
 
 from . import path
 from ._fscompat import fsdecode, fsencode

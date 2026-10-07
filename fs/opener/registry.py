@@ -8,7 +8,8 @@ import typing
 
 import collections
 import contextlib
-import pkg_resources
+import importlib.metadata as _importlib_metadata
+import sys
 
 from ..errors import ResourceReadOnly
 from .base import Opener
@@ -16,9 +17,37 @@ from .errors import EntryPointError, UnsupportedProtocol
 from .parse import parse_fs_url
 
 if typing.TYPE_CHECKING:
-    from typing import Callable, Dict, Iterator, List, Text, Tuple, Type, Union
+    from typing import (
+        Any,
+        Callable,
+        Dict,
+        Iterator,
+        List,
+        Optional,
+        Text,
+        Tuple,
+        Type,
+        Union,
+    )
 
     from ..base import FS
+
+
+def _iter_entry_points(group, name=None):
+    # type: (Text, Optional[Text]) -> List[Any]
+    """Return the entry points of ``group``, optionally only those named ``name``.
+
+    Replaces ``pkg_resources.iter_entry_points``, which no longer exists with
+    setuptools 82+. Entry points are returned in ``sys.path`` order, so the
+    first match wins, as before.
+    """
+    if sys.version_info >= (3, 10):
+        entry_points = list(_importlib_metadata.entry_points(group=group))
+    else:  # Python 3.9: entry_points() returns a dict keyed by group
+        entry_points = list(_importlib_metadata.entry_points().get(group, ()))
+    if name is not None:
+        entry_points = [ep for ep in entry_points if ep.name == name]
+    return entry_points
 
 
 class Registry(object):
@@ -75,8 +104,7 @@ class Registry(object):
         _protocols = list(self._protocols)
         if self.load_extern:
             _protocols.extend(
-                entry_point.name
-                for entry_point in pkg_resources.iter_entry_points("fs.opener")
+                entry_point.name for entry_point in _iter_entry_points("fs.opener")
             )
             _protocols = list(collections.OrderedDict.fromkeys(_protocols))
         return _protocols
@@ -102,9 +130,7 @@ class Registry(object):
         protocol = protocol or self.default_opener
 
         if self.load_extern:
-            entry_point = next(
-                pkg_resources.iter_entry_points("fs.opener", protocol), None
-            )
+            entry_point = next(iter(_iter_entry_points("fs.opener", protocol)), None)
         else:
             entry_point = None
 

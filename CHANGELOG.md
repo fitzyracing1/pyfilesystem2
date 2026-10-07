@@ -9,6 +9,25 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 
 
+## [2.4.17] - 2026-10-07 (fitzyracing-fs fork)
+
+### Fixed
+
+- `import fs` no longer requires `pkg_resources`, which setuptools 82+ removed
+  ([#577](https://github.com/PyFilesystem/pyfilesystem2/issues/577),
+  [#597](https://github.com/PyFilesystem/pyfilesystem2/issues/597)):
+  `fs` and `fs.opener` are now pkgutil-style namespace packages
+  ([#590](https://github.com/PyFilesystem/pyfilesystem2/pull/590)), and `fs.opener`
+  entry-point plugins are discovered with `importlib.metadata`
+  (based on [#589](https://github.com/PyFilesystem/pyfilesystem2/pull/589), with plugin
+  protocols still listed in `registry.protocols` on Python 3.10+).
+
+### Changed
+
+- Published as `fitzyracing-fs`; the import name is still `fs`.
+- No longer depends on `setuptools`. Requires Python 3.9+. Packaging moved to `pyproject.toml`.
+
+
 ## [2.4.16] - 2022-05-02
 
 ### Changed

@@ -23,6 +23,14 @@ import unittest
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+
+def _fs_home():
+    # Directory that contains the `fs` package under test: the source tree,
+    # or site-packages when the suite is run against an installed wheel.
+    import fs
+
+    return os.path.dirname(os.path.dirname(os.path.abspath(fs.__file__)))
+
 BLOCK_PKG_RESOURCES = "import sys; sys.modules['pkg_resources'] = None\n"
 
 
@@ -42,11 +50,11 @@ class _SubprocessTest(unittest.TestCase):
         shutil.rmtree(self.tmp, ignore_errors=True)
 
     def run_code(self, code, extra_path=()):
-        # The fork's source tree comes first, extra entries (plugin
+        # The `fs` under test comes first, extra entries (plugin
         # "site-packages" directories) after it, like separate install
         # locations on sys.path.
         env = dict(os.environ)
-        env["PYTHONPATH"] = os.pathsep.join([ROOT] + list(extra_path))
+        env["PYTHONPATH"] = os.pathsep.join([_fs_home()] + list(extra_path))
         env.pop("PYTHONSTARTUP", None)
         proc = subprocess.run(
             [sys.executable, "-c", BLOCK_PKG_RESOURCES + textwrap.dedent(code)],

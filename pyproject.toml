@@ -1,0 +1,56 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+# Published as a separate distribution; the import name stays `fs`.
+name = "fitzyracing-fs"
+dynamic = ["version"]
+description = "Python's filesystem abstraction layer (maintained fork of fs / PyFilesystem2 that imports without pkg_resources)"
+readme = { file = "README.md", content-type = "text/markdown" }
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Will McGugan", email = "will@willmcgugan.com" }]
+maintainers = [{ name = "Joshua Almeida", email = "fitzyracing1@gmail.com" }]
+keywords = ["filesystem", "pyfilesystem", "fs", "fork"]
+requires-python = ">=3.9"
+# Upstream also required `setuptools` (for pkg_resources); that is no longer needed.
+dependencies = [
+    "appdirs~=1.4.3",
+    "six~=1.10",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Topic :: System :: Filesystems",
+    "Typing :: Typed",
+]
+
+[project.urls]
+Homepage = "https://github.com/fitzyracing1/pyfilesystem2"
+Source = "https://github.com/fitzyracing1/pyfilesystem2"
+Issues = "https://github.com/fitzyracing1/pyfilesystem2/issues"
+Changelog = "https://github.com/fitzyracing1/pyfilesystem2/blob/master/CHANGELOG.md"
+Documentation = "https://pyfilesystem2.readthedocs.io/en/latest/"
+Upstream = "https://github.com/PyFilesystem/pyfilesystem2"
+"360 Bench" = "https://github.com/fitzyracing1/360-bench"
+
+[tool.setuptools.packages.find]
+include = ["fs", "fs.*"]
+
+[tool.setuptools.package-data]
+fs = ["py.typed"]
+
+[tool.setuptools.dynamic]
+version = { attr = "fs._version.__version__" }
