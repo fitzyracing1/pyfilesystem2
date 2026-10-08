@@ -1,7 +1,5 @@
 from __future__ import unicode_literals
 
-import sys
-
 import importlib
 import importlib.metadata
 import os

@@ -31,6 +31,7 @@ def _fs_home():
 
     return os.path.dirname(os.path.dirname(os.path.abspath(fs.__file__)))
 
+
 BLOCK_PKG_RESOURCES = "import sys; sys.modules['pkg_resources'] = None\n"
 
 

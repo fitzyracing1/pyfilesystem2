@@ -6,8 +6,9 @@ pyftpdlib ~=1.5
 
 # these are optional dependencies for pyftpdlib that
 # are not explicitly listed, we need to install these
-# ourselves
-psutil ~=5.0
+# ourselves (pyftpdlib's test helpers call Process.net_connections(),
+# which needs psutil 6+)
+psutil >=6.0
 pysendfile ~=2.0 ; python_version <= "3.3"
 
 # mock is only available from Python 3.3 onward, and 

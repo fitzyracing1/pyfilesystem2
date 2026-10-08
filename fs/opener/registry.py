@@ -41,8 +41,13 @@ def _iter_entry_points(group, name=None):
     setuptools 82+. Entry points are returned in ``sys.path`` order, so the
     first match wins, as before.
     """
+    entry_points = []  # type: List[Any]
     if sys.version_info >= (3, 10):
-        entry_points = list(_importlib_metadata.entry_points(group=group))
+        # The typeshed bundled with the pinned mypy predates the ``group=``
+        # keyword (added in Python 3.10).
+        entry_points = list(
+            _importlib_metadata.entry_points(group=group)  # type: ignore
+        )
     else:  # Python 3.9: entry_points() returns a dict keyed by group
         entry_points = list(_importlib_metadata.entry_points().get(group, ()))
     if name is not None:
