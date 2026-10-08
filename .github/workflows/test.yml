@@ -16,8 +16,7 @@ jobs:
           - '3.11'
           - '3.12'
           - '3.13'
-          # 3.14 left out for now: urllib.request.pathname2url() now returns
-          # "///abs/path", so geturl(purpose="fs") yields "osfs://///..." (library bug).
+          - '3.14'
           - pypy-3.10
           - pypy-3.11
     steps:

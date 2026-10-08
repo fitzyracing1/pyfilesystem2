@@ -9,6 +9,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## Unreleased
 
 
+## [2.4.18] - 2026-10-07 (fitzyracing-fs fork)
+
+### Fixed
+
+- `geturl(path, purpose="fs")` on Python 3.14: `urllib.request.pathname2url()`
+  now returns `///tmp/x` for `/tmp/x`, so `OSFS` produced `osfs://///tmp/x`
+  (and `ZipFS`/`TarFS` `zip://///...`/`tar://///...`). `fs._url_tools.url_quote`
+  now drops that extra prefix, so URLs are the same as on Python 3.9 to 3.13.
+  Python 3.14 is tested in CI again.
+
+
 ## [2.4.17] - 2026-10-07 (fitzyracing-fs fork)
 
 ### Fixed

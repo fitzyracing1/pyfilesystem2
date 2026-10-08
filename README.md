@@ -47,6 +47,10 @@ the API and behaviour are unchanged.
   calls `entry_points(group=..., name=None)`, which matches no entry points. As a result
   `registry.protocols` silently lost every plugin protocol (opening a plugin URL still worked).
   The fork's tests cover that case with a dummy plugin.
+- **`geturl(..., purpose="fs")` works on Python 3.14** (2.4.18). Python 3.14's
+  `urllib.request.pathname2url()` returns `///tmp/x` for `/tmp/x`, so `OSFS.geturl()` returned
+  `osfs://///tmp/x` instead of `osfs:///tmp/x` (same for `zip://` and `tar://` URLs from `ZipFS`
+  and `TarFS`). The URLs are now the same as on Python 3.9 to 3.13, and 3.14 is tested in CI.
 - **Packaging:** `pyproject.toml` replaces `setup.py`; Python 3.9+ (Python 2.7 and 3.5 to 3.8 are no
   longer supported. If you are stuck on those, keep upstream `fs==2.4.16` with `setuptools<82`).
 

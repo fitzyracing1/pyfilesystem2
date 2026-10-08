@@ -26,13 +26,33 @@ def url_quote(path_snippet):
         drive_letter, path = path_snippet.split(":", 1)
         if six.PY2:
             path = path.encode("utf-8")
-        path = six.moves.urllib.request.pathname2url(path)
+        path = _pathname2url(path)
         path_snippet = "{}:{}".format(drive_letter, path)
     else:
         if six.PY2:
             path_snippet = path_snippet.encode("utf-8")
-        path_snippet = six.moves.urllib.request.pathname2url(path_snippet)
+        path_snippet = _pathname2url(path_snippet)
     return path_snippet
+
+
+def _pathname2url(path):
+    # type: (Text) -> Text
+    r"""Call `~urllib.request.pathname2url`, with the same result on all Pythons.
+
+    Python 3.14 adds an empty URL authority (``//``) in front of every
+    absolute path (``/tmp/x`` becomes ``///tmp/x``), which earlier
+    versions don't do for paths starting with a single slash. Drop that
+    prefix again for such paths, so URLs like ``osfs:///tmp/x`` don't
+    turn into ``osfs://///tmp/x``. Paths starting with ``//``, such as
+    UNC paths (``\\server\share``), are left untouched.
+
+    """
+    url = six.moves.urllib.request.pathname2url(path)
+    if _WINDOWS_PLATFORM:
+        path = path.replace("\\", "/")
+    if path.startswith("/") and not path.startswith("//") and url.startswith("///"):
+        url = url[2:]
+    return url
 
 
 def _has_drive_letter(path_snippet):
