@@ -248,3 +248,8 @@ Will McGugan. The original license and copyright notice are retained unchanged; 
 released under the same license.
 
 Original project: https://github.com/PyFilesystem/pyfilesystem2
+
+## Project documentation
+
+- In-repo docs: [docs/](docs/index.md)
+- Wiki: [https://github.com/fitzyracing1/pyfilesystem2/wiki](https://github.com/fitzyracing1/pyfilesystem2/wiki)
