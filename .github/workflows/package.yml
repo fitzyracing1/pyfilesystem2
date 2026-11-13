@@ -16,7 +16,7 @@ permissions:
 jobs:
 
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     name: Build distributions
     steps:
     - name: Checkout code
@@ -38,7 +38,7 @@ jobs:
         path: dist/*
 
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     name: Test ${{ matrix.dist }} distribution
     needs: build
     strategy:
