@@ -45,6 +45,7 @@ Changelog = "https://github.com/fitzyracing1/pyfilesystem2/blob/master/CHANGELOG
 Documentation = "https://pyfilesystem2.readthedocs.io/en/latest/"
 Upstream = "https://github.com/PyFilesystem/pyfilesystem2"
 "360 Bench" = "https://github.com/fitzyracing1/360-bench"
+Funding = "https://github.com/sponsors/fitzyracing1"
 
 [tool.setuptools.packages.find]
 include = ["fs", "fs.*"]
